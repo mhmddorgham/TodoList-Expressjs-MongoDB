@@ -10,8 +10,31 @@
 
 <body>
 
-  <h1>Today is <%=theDay%>
+
+
+
+  <h1>
+    <%=theDay%>
   </h1>
+
+
+
+  <form action="/" method="post">
+    <input type="text" name="task" id="" placeholder="Add Task...">
+    <button type="submit">Add</button>
+  </form>
+
+  <ul>
+    <li>Finish Task 1</li>
+    <li>Finish Task 2</li>
+    <li>Finish Task 3</li>
+    <% for(let i=0; i<newItems.length; i++){ %>
+      <li>
+        <%= newItems[i] %>
+      </li>
+      <% }%>
+  </ul>
+
 
 </body>
 
