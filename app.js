@@ -2,11 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
-var newTasks = [];
+//create array of new tasks
+var newTasks = ["Task 1", "Task 2", "Task 3"];
 
 
-app.use(bodyParser.urlencoded({ extended: true }))
 
+//start using body parser in to get information
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//Apply static css file to my server
+app.use(express.static(__dirname + '/public'));
+
+//start using EJS:
 app.set('view engine', 'ejs');
 
 
@@ -25,16 +32,18 @@ app.get("/", (req, res) => {
 
   //set today to date that has been generated using tolocaleDateString:
   today = theDate.toLocaleDateString("en-US", options);
-
+  //render the index.ejs
   res.render('index', { theDay: today, newItems: newTasks });
 
 })
 
 
 app.post("/", (req, res) => {
+  //set the new task in a new variable:
   var newTask = req.body.task;
+  //put this task in the array
   newTasks.push(newTask);
-
+  //redirect to the main page with passing newtasks in the page:
   res.redirect("/");
 })
 

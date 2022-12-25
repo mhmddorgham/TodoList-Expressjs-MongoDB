@@ -6,34 +6,42 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To Do List Version 1</title>
+  <link rel="stylesheet" href="../CSS/styles.css">
 </head>
 
 <body>
 
 
+  <div class="box" id="heading">
+    <!-- Get the day from javascript file to the ejs file -->
+    <h1>
+      <%=theDay%>
+    </h1>
+  </div>
 
 
-  <h1>
-    <%=theDay%>
-  </h1>
 
 
 
-  <form action="/" method="post">
-    <input type="text" name="task" id="" placeholder="Add Task...">
-    <button type="submit">Add</button>
-  </form>
-
-  <ul>
-    <li>Finish Task 1</li>
-    <li>Finish Task 2</li>
-    <li>Finish Task 3</li>
+  <div class="box">
+    <!-- Add javascript code inside these marks and set for loop to loop thorugh the array we created and create new li and set the item inside it: -->
     <% for(let i=0; i<newItems.length; i++){ %>
-      <li>
-        <%= newItems[i] %>
-      </li>
+      <div class="item">
+        <input type="checkbox">
+        <p>
+          <%= newItems[i] %>
+        </p>
+      </div>
+
       <% }%>
-  </ul>
+
+        <form class="item" action="/" method="post">
+          <input type="text" name="task" id="" placeholder="Add Task..." autocomplete="off" autofocus>
+          <button type="submit" name="button">+</button>
+        </form>
+
+  </div>
+
 
 
 </body>
