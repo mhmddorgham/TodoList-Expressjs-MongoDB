@@ -3,11 +3,16 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const Schema = mongoose.Schema;
 //create array of new tasks
 var newTasks = ["Task 1", "Task 2", "Task 3"];
+//create a new database called todoDB, and connect to the mongose
+mongoose.connect('mongodb://127.0.0.1:27017/todoDB', { useNewUrlParser: true });
 
 
-
+const itemsSchema = new Schema({
+  theName: String
+})
 
 //start using body parser in to get information
 app.use(bodyParser.urlencoded({ extended: true }));
