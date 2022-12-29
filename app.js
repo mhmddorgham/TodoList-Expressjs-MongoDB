@@ -5,16 +5,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const Schema = mongoose.Schema;
 //create array of new tasks
-var newTasks = ["Task 1", "Task 2", "Task 3"];
+var newTasks = [];
 //create a new database called todoDB, and connect to the mongose
 mongoose.connect('mongodb://127.0.0.1:27017/todoDB', { useNewUrlParser: true });
-
-//create a new Schema
-const itemsSchema = new Schema({
-  theName: String
-})
-
-const item = mongoose.model("item", itemsSchema);
 
 //start using body parser in to get information
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,9 +19,25 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 
+//create a new Schema
+const itemsSchema = new Schema({
+  theName: String
+})
+
+const item = mongoose.model("item", itemsSchema);
+
+const firstTask = new item({
+  theName: "Buid todolist"
+})
+const secondTask = new item({
+  theName: "Design todolist"
+})
+const thirdTask = new item({
+  theName: "Upload todolist on GitHub"
+})
+
 app.get("/", (req, res) => {
   const theDate = new Date();
-  const currDay = theDate.getDay();
 
   //Create data information the menstioned in the date:
   var options = {
