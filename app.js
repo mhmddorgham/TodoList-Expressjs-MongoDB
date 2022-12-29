@@ -38,7 +38,6 @@ const thirdTask = new item({
 
 
 // item.insertMany([firstTask, secondTask, thirdTask], (err) => { err ? console.log(err) : console.log("Succefully Inserted items in the database"); })
-
 // const defaultItems = [firstTask, secondTask, thirdTask]
 // newTasks.push(defaultItems)
 
@@ -50,6 +49,7 @@ newTasks.push(thirdTask);
 item.find((err, tasks) => {
   err ? console.log(err) : tasks.forEach((ele) => { console.log(ele.theName) })
 })
+
 
 app.get("/", (req, res) => {
   const theDate = new Date();
