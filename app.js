@@ -37,6 +37,9 @@ const thirdTask = new item({
 })
 
 
+item.insertMany([firstTask, secondTask, thirdTask], (err) => { err ? console.log(err) : console.log("Succefully Inserted items in the database"); })
+
+
 
 newTasks.push(firstTask.theName);
 newTasks.push(secondTask.theName);
