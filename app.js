@@ -36,6 +36,12 @@ const thirdTask = new item({
   theName: "Upload todolist on GitHub"
 })
 
+
+
+newTasks.push(firstTask.theName);
+newTasks.push(secondTask.theName);
+newTasks.push(thirdTask.theName);
+
 app.get("/", (req, res) => {
   const theDate = new Date();
 
@@ -57,12 +63,16 @@ app.get("/", (req, res) => {
 
 
 app.post("/", (req, res) => {
-  //set the new task in a new variable:
-  var newTask = req.body.task;
-  //put this task in the array
-  newTasks.push(newTask);
-  //redirect to the main page with passing newtasks in the page:
-  res.redirect("/");
+  // const newTask = new item({
+  //   theName: req.body.task
+  // })
+  // //put this task in the array
+  // newTasks.push(newTask);
+  // //redirect to the main page with passing newtasks in the page:
+  // res.redirect("/");
+
+
+
 })
 
 /**
