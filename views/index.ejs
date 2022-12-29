@@ -22,15 +22,18 @@
 
   <div class="box">
     <!-- Add javascript code inside these marks and set for loop to loop thorugh the array we created and create new li and set the item inside it: -->
-    <% for(let i=0; i<newItems.length; i++){ %>
+
+
+    <% newItems.forEach((ele)=>{%>
       <div class="item">
-        <input type="checkbox">
+        <input type="checkbox" />
         <p>
-          <%= newItems[i] %>
+          <%= ele.theName %>
         </p>
       </div>
+      <% })%>
 
-      <% }%>
+
 
         <form class="item" action="/" method="post">
           <input type="text" name="task" id="" placeholder="Add Task..." autocomplete="off" autofocus>
