@@ -9,10 +9,12 @@ var newTasks = ["Task 1", "Task 2", "Task 3"];
 //create a new database called todoDB, and connect to the mongose
 mongoose.connect('mongodb://127.0.0.1:27017/todoDB', { useNewUrlParser: true });
 
-
+//create a new Schema
 const itemsSchema = new Schema({
   theName: String
 })
+
+const item = mongoose.model("item", itemsSchema);
 
 //start using body parser in to get information
 app.use(bodyParser.urlencoded({ extended: true }));
