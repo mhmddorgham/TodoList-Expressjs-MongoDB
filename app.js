@@ -63,6 +63,8 @@ app.get("/", (req, res) => {
 
   console.log(theDate.toLocaleDateString("en-US", options)); // 9/17/2016
 
+
+
   //set today to date that has been generated using tolocaleDateString:
   today = theDate.toLocaleDateString("en-US", options);
   //render the index.ejs
