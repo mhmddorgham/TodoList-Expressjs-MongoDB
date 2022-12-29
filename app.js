@@ -73,6 +73,8 @@ app.get("/", (req, res) => {
 })
 
 
+
+
 app.post("/", (req, res) => {
   // const newTask = new item({
   //   theName: req.body.task
@@ -81,7 +83,6 @@ app.post("/", (req, res) => {
   // newTasks.push(newTask);
   // //redirect to the main page with passing newtasks in the page:
   // res.redirect("/");
-
 
 
 })
