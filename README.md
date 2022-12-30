@@ -2,3 +2,4 @@
 ### Created todolist using JavaScript and ejs 
 Created todolist using JavaScript and ejs
 Created todolist version 1
+Created todolist version 2
