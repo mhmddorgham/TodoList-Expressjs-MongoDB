@@ -106,8 +106,10 @@ app.post("/", (req, res) => {
 
 app.post("/delete", (req, res) => {
   const deletedItemId = req.body.theCheckbox;
+  //add the delete operation 
 
-
+  item.deleteOne({ _id: deletedItemId }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
+  res.redirect("/");
 })
 
 /**
