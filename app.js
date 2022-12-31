@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const Schema = mongoose.Schema;
+var todoName = " ";
 //create array of new tasks
 var newTasks = [];
 //create a new database called todoDB, and connect to the mongose
@@ -52,7 +53,7 @@ var defaultItems = [firstTask, secondTask, thirdTask];
 
 // item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
 
-
+//Main Route
 app.get("/", (req, res) => {
   const theDate = new Date();
 
@@ -64,7 +65,6 @@ app.get("/", (req, res) => {
   };
 
   console.log(theDate.toLocaleDateString("en-US", options)); // 9/17/2016
-
 
 
   //set today to date that has been generated using tolocaleDateString:
@@ -88,9 +88,46 @@ app.get("/", (req, res) => {
       }
     }
   })
+});
+
+
+//Subroutes
+app.get("/:category", (req, res) => {
+
+  todoName = req.params.category.charAt(0).toLocaleUpperCase() + req.params.category.slice(1).toLowerCase();
+  const theDate = new Date();
+  //Create data information the menstioned in the date:
+  var options = {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+  };
+
+  console.log(theDate.toLocaleDateString("en-US", options));
+
+
+  //set today to date that has been generated using tolocaleDateString:
+  today = theDate.toLocaleDateString("en-US", options) + "\n" + todoName + " Todo List";
+  //render the index.ejs
+
+  item.find((err, items) => {
+
+    if (err) {
+      console.log(err)
+    }
+    else {
+      if (items.length === 0) {
+        item.insertMany(defaultItems, (err) => {
+          err ? console.log(err) : console.log("Succefully Inserted items in the database");
+        });
+        res.redirect("/");
+      }
+      else {
+        res.render('index', { theDay: today, newItems: items });
+      }
+    }
+  })
 })
-
-
 
 
 
@@ -105,22 +142,13 @@ app.post("/", (req, res) => {
 
 
 app.post("/delete", (req, res) => {
+  //catch the obj id in a variable
   const deletedItemId = req.body.theCheckbox;
   //add the delete operation 
-
   item.deleteOne({ _id: deletedItemId }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
   res.redirect("/");
 })
 
-/**
- * app.post('/',(req,res)=>{
-  const {fname,lname,email,birthday} = req.body
-  res.render('submit',{first:fname,last:lname,email:email,birth:birthday})
-})
- * 
- * 
- * 
- */
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
