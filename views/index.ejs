@@ -19,26 +19,28 @@
     </h1>
   </div>
 
+  <form action="/delete" method="post">
+    <div class="box">
+      <!-- Add javascript code inside these marks and set for loop to loop thorugh the array we created and create new li and set the item inside it: -->
 
-  <div class="box">
-    <!-- Add javascript code inside these marks and set for loop to loop thorugh the array we created and create new li and set the item inside it: -->
+      <% newItems.forEach((ele)=>{%>
+        <div class="item">
+
+          <input type="checkbox" onChange="this.form.submit()" />
+          <p>
+            <%= ele.theName %>
+          </p>
+
+        </div>
+
+        <% })%>
+  </form>
 
 
-    <% newItems.forEach((ele)=>{%>
-      <div class="item">
-        <input type="checkbox" />
-        <p>
-          <%= ele.theName %>
-        </p>
-      </div>
-      <% })%>
-
-
-
-        <form class="item" action="/" method="post">
-          <input type="text" name="task" id="" placeholder="Add Task..." autocomplete="off" autofocus>
-          <button type="submit" name="button">+</button>
-        </form>
+  <form class="item" action="/" method="post">
+    <input type="text" name="task" id="" placeholder="Add Task..." autocomplete="off" autofocus>
+    <button type="submit" name="button">+</button>
+  </form>
 
   </div>
 
