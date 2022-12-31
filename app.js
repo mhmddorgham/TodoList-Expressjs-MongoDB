@@ -20,11 +20,11 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 
-//create a new Schema
+//create a Schema of items
 const itemsSchema = new Schema({
   theName: String
 })
-
+//create model of item schema:
 const item = mongoose.model("item", itemsSchema);
 
 // Default Items
@@ -42,14 +42,24 @@ const thirdTask = new item({
 var defaultItems = [firstTask, secondTask, thirdTask];
 
 
+
 // item.find((err, items) => {
 //   err ? console.log(err) : items.forEach((obj) => { console.log(obj.theName) })
 // });
 
+//Create list collections:
+
+//Create list schema:
+
+var listSchema = new Schema({
+  theCategory: String,
+  //create the listitems as an array in the schema, so we can store array:
+  listItems: [itemsSchema]
+})
 
 
-
-
+//create model of list schema:
+const List = mongoose.model("list", listSchema);
 
 // item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
 
@@ -91,12 +101,16 @@ app.get("/", (req, res) => {
 });
 
 
+
+
 //Subroutes
 app.get("/:category", (req, res) => {
 
-  todoName = req.params.category.charAt(0).toLocaleUpperCase() + req.params.category.slice(1).toLowerCase();
+  var todoName = req.params.category;
+
+  //create a new date:
   const theDate = new Date();
-  //Create data information the menstioned in the date:
+  //Create data information the mentioned in the date:
   var options = {
     weekday: 'long',
     month: 'long',
@@ -107,26 +121,29 @@ app.get("/:category", (req, res) => {
 
 
   //set today to date that has been generated using tolocaleDateString:
-  today = theDate.toLocaleDateString("en-US", options) + "\n" + todoName + " Todo List";
-  //render the index.ejs
+  var today = theDate.toLocaleDateString("en-US", options) + "\n" + todoName + " Todo List";
 
-  item.find((err, items) => {
 
+  List.findOne({ theCategory: todoName }, (err, theList) => {
     if (err) {
-      console.log(err)
+      console.log(err);
     }
     else {
-      if (items.length === 0) {
-        item.insertMany(defaultItems, (err) => {
-          err ? console.log(err) : console.log("Succefully Inserted items in the database");
+      if (!theList) {
+        const categoryList = new List({
+          theCategory: todoName,
+          listItems: defaultItems
         });
-        res.redirect("/");
+        categoryList.save();
+        res.redirect("/" + todoName);
       }
       else {
-        res.render('index', { theDay: today, newItems: items });
+        res.render('index', { theDay: today, newItems: theList.listItems });
       }
     }
   })
+
+
 })
 
 
@@ -153,3 +170,27 @@ app.post("/delete", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
+
+
+  //create a new list collections:
+
+  // List.find((err, lists) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  //   else {
+  //     for (let i = 0; i < lists.length; i++) {
+  //       if (lists[i].category === todoName) {
+  //         break;
+  //       }
+  //       else if (lists[i].category !== todoName && i == lists.length - 1) {
+  //         categoryList = new List({
+  //           category: todoName,
+  //           listItems: defaultItems
+  //         })
+  //         categoryList.save();
+  //       }
+  //     }
+  //   }
+  // })
+
