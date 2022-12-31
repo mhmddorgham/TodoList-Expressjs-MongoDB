@@ -5,6 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const Schema = mongoose.Schema;
 var todoName = " ";
+var newTaskCateg
 //create array of new tasks
 var newTasks = [];
 //create a new database called todoDB, and connect to the mongose
@@ -106,7 +107,7 @@ app.get("/", (req, res) => {
 //Subroutes
 app.get("/:category", (req, res) => {
 
-  var todoName = req.params.category;
+  todoName = req.params.category;
 
   //create a new date:
   const theDate = new Date();
@@ -144,6 +145,16 @@ app.get("/:category", (req, res) => {
   })
 
 
+})
+
+
+
+app.post("/" + todoName, (req, res) => {
+  newTaskCateg = new item({
+    theName: req.body.task
+  })
+  newTaskCateg.save()
+  res.redirect("/" + todoName);
 })
 
 
