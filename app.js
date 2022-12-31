@@ -105,7 +105,9 @@ app.post("/", (req, res) => {
 
 
 app.post("/delete", (req, res) => {
-  console.log(req.body);
+  const deletedItemId = req.body.theCheckbox;
+
+
 })
 
 /**
