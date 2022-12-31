@@ -37,28 +37,20 @@ const thirdTask = new item({
   theName: "Upload todolist on GitHub"
 })
 
-
-//add the items to the collection:
-
-
-// item.insertMany([firstTask, secondTask, thirdTask], (err) => { err ? console.log(err) : console.log("Succefully Inserted items in the database"); })
+//add defualt items to default item array:
+var defaultItems = [firstTask, secondTask, thirdTask];
 
 
-// newTasks.push(defaultItems)
-
-
-
-
-item.find((err, items) => {
-  err ? console.log(err) : items.forEach((obj) => { console.log(obj.theName) })
-});
+// item.find((err, items) => {
+//   err ? console.log(err) : items.forEach((obj) => { console.log(obj.theName) })
+// });
 
 
 
 
 
 
-// item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
+item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
 
 
 app.get("/", (req, res) => {
@@ -86,19 +78,16 @@ app.get("/", (req, res) => {
     }
     else {
       if (items.length === 0) {
-
-        item.insertMany([firstTask, secondTask, thirdTask], (err) => {
+        item.insertMany(defaultItems, (err) => {
           err ? console.log(err) : console.log("Succefully Inserted items in the database");
-        })
-        res.redirect("/")
+        });
+        res.redirect("/");
       }
       else {
         res.render('index', { theDay: today, newItems: items });
       }
     }
   })
-
-
 })
 
 
