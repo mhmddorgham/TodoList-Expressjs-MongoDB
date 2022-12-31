@@ -149,13 +149,13 @@ app.get("/:category", (req, res) => {
 
 
 
-app.post("/" + todoName, (req, res) => {
-  newTaskCateg = new item({
-    theName: req.body.task
-  })
-  newTaskCateg.save()
-  res.redirect("/" + todoName);
-})
+// app.post("/" + todoName, (req, res) => {
+//   newTaskCateg = new item({
+//     theName: req.body.task
+//   })
+//   newTaskCateg.save()
+//   res.redirect("/" + todoName);
+// })
 
 
 
