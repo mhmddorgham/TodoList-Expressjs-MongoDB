@@ -50,7 +50,7 @@ var defaultItems = [firstTask, secondTask, thirdTask];
 
 
 
-item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
+// item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
 
 
 app.get("/", (req, res) => {
@@ -95,13 +95,11 @@ app.get("/", (req, res) => {
 
 
 app.post("/", (req, res) => {
-  // const newTask = new item({
-  //   theName: req.body.task
-  // })
-  // //put this task in the array
-  // newTasks.push(newTask);
-  // //redirect to the main page with passing newtasks in the page:
-  // res.redirect("/");
+  const newTask = new item({
+    theName: req.body.task
+  })
+  newTask.save()
+  res.redirect("/");
 })
 
 /**
