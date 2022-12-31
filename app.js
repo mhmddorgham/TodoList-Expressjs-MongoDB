@@ -51,7 +51,6 @@ var defaultItems = [firstTask, secondTask, thirdTask];
 //Create list collections:
 
 //Create list schema:
-
 var listSchema = new Schema({
   theCategory: String,
   //create the listitems as an array in the schema, so we can store array:
@@ -125,6 +124,7 @@ app.get("/:category", (req, res) => {
   var today = theDate.toLocaleDateString("en-US", options) + "\n" + todoName + " Todo List";
 
 
+  //check if the collection is already there before creating a new collection
   List.findOne({ theCategory: todoName }, (err, theList) => {
     if (err) {
       console.log(err);
