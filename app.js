@@ -102,6 +102,12 @@ app.post("/", (req, res) => {
   res.redirect("/");
 })
 
+
+
+app.post("/delete", (req, res) => {
+  console.log(req.body);
+})
+
 /**
  * app.post('/',(req,res)=>{
   const {fname,lname,email,birthday} = req.body

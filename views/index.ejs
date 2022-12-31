@@ -26,7 +26,7 @@
       <% newItems.forEach((ele)=>{%>
         <div class="item">
 
-          <input type="checkbox" onChange="this.form.submit()" />
+          <input type="checkbox" name="theCheckbox" value="<%= ele._id%>" onChange="this.form.submit()" />
           <p>
             <%= ele.theName %>
           </p>
