@@ -26,6 +26,7 @@ const itemsSchema = new Schema({
 
 const item = mongoose.model("item", itemsSchema);
 
+// Default Items
 const firstTask = new item({
   theName: "Buid todolist"
 })
@@ -37,18 +38,27 @@ const thirdTask = new item({
 })
 
 
+//add the items to the collection:
+
+
 // item.insertMany([firstTask, secondTask, thirdTask], (err) => { err ? console.log(err) : console.log("Succefully Inserted items in the database"); })
-// const defaultItems = [firstTask, secondTask, thirdTask]
+
+
 // newTasks.push(defaultItems)
 
-newTasks.push(firstTask);
-newTasks.push(secondTask);
-newTasks.push(thirdTask);
 
 
-item.find((err, tasks) => {
-  err ? console.log(err) : tasks.forEach((ele) => { console.log(ele.theName) })
-})
+
+item.find((err, items) => {
+  err ? console.log(err) : items.forEach((obj) => { console.log(obj.theName) })
+});
+
+
+
+
+
+
+// item.updateOne({ theName: "Buid todolist" }, { theName: "Build todolist" }, (err) => { err ? console.log(err) : console.log("Succefully Updated the item"); })
 
 
 app.get("/", (req, res) => {
@@ -68,9 +78,29 @@ app.get("/", (req, res) => {
   //set today to date that has been generated using tolocaleDateString:
   today = theDate.toLocaleDateString("en-US", options);
   //render the index.ejs
-  res.render('index', { theDay: today, newItems: newTasks });
+
+  item.find((err, items) => {
+
+    if (err) {
+      console.log(err)
+    }
+    else {
+      if (items.length === 0) {
+
+        item.insertMany([firstTask, secondTask, thirdTask], (err) => {
+          err ? console.log(err) : console.log("Succefully Inserted items in the database");
+        })
+        res.redirect("/")
+      }
+      else {
+        res.render('index', { theDay: today, newItems: items });
+      }
+    }
+  })
+
 
 })
+
 
 
 
@@ -83,8 +113,6 @@ app.post("/", (req, res) => {
   // newTasks.push(newTask);
   // //redirect to the main page with passing newtasks in the page:
   // res.redirect("/");
-
-
 })
 
 /**
