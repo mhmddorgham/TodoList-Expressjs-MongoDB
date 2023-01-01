@@ -182,7 +182,6 @@ app.post("/", (req, res) => {
       foundList.save();
       res.redirect("/" + theListName)
     })
-
   }
 })
 
@@ -219,27 +218,4 @@ app.post("/delete", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
-
-
-  //create a new list collections:
-
-  // List.find((err, lists) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  //   else {
-  //     for (let i = 0; i < lists.length; i++) {
-  //       if (lists[i].category === todoName) {
-  //         break;
-  //       }
-  //       else if (lists[i].category !== todoName && i == lists.length - 1) {
-  //         categoryList = new List({
-  //           category: todoName,
-  //           listItems: defaultItems
-  //         })
-  //         categoryList.save();
-  //       }
-  //     }
-  //   }
-  // })
 
