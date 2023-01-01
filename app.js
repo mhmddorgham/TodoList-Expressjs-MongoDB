@@ -10,6 +10,7 @@ var SubpagesURL = " ";
 var newTaskCateg
 //create array of new tasks
 var newTasks = [];
+var theListName = "";
 //create a new database called todoDB, and connect to the mongose
 mongoose.connect('mongodb://127.0.0.1:27017/todoDB', { useNewUrlParser: true });
 
@@ -163,7 +164,7 @@ console.log(todoName);
 //the main post route
 app.post("/", (req, res) => {
   const theTaskName = req.body.task;
-  const theListName = req.body.button;
+  theListName = req.body.button;
   const newTask = new item({
     theName: theTaskName
   })
@@ -172,7 +173,7 @@ app.post("/", (req, res) => {
     newTask.save()
     res.redirect("/");
   } else {
-    List.findOne({ theCategory: todoName }, (err, foundList) => {
+    List.findOne({ theCategory: theListName }, (err, foundList) => {
       foundList.listItems.push(newTask);
       foundList.save();
       res.redirect("/" + theListName)
@@ -185,11 +186,27 @@ app.post("/", (req, res) => {
 
 app.post("/delete", (req, res) => {
   //catch the obj id in a variable
-  const deletedItemId = req.body.theCheckbox;
-  //add the delete operation 
-  item.deleteOne({ _id: deletedItemId }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
-  res.redirect("/");
-})
+  const deleteMainItems = req.body.MainCheckbox;
+  const deleteFromList = req.body.Subcheckbox;
+  const nameOfTheList = req.body.theNameOfList;
+  console.log(deleteFromList);
+  console.log(deleteMainItems);
+  //add the delete operation
+  if (deleteMainItems !== undefined) {
+    console.log("Yesssss");
+    item.delete({ _id: deleteMainItems }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
+    res.redirect("/");
+  } else {
+    console.log("Look here");
+    console.log(nameOfTheList);
+    List.findOneAndUpdate({ theCategory: nameOfTheList }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
+      if (!err) {
+        res.redirect("/" + nameOfTheList);
+      }
+    })
+  }
+}
+)
 
 
 app.listen(PORT, () => {

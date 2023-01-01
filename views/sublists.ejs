@@ -28,11 +28,11 @@
       <% newItems.forEach((ele)=>{%>
         <div class="item">
 
-          <input type="checkbox" name="theCheckbox" value="<%= ele._id%>" onChange="this.form.submit()" />
+          <input type="checkbox" name="Subcheckbox" value="<%= ele._id%>" onChange="this.form.submit()" />
           <p>
             <%= ele.theName %>
           </p>
-
+          <input type="hidden" name="theNameOfList" value="<%=theListName%>">
         </div>
 
         <% })%>
