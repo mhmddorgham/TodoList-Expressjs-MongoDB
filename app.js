@@ -147,7 +147,7 @@ app.get("/:category", (req, res) => {
         res.redirect("/" + todoName);
       }
       else {
-        res.render('sublists', { theDay: today, theListName: todoName, newItems: theList.listItems });
+        res.render('sublists', { theDay: today, theListName: _.capitalize(todoName), newItems: theList.listItems });
       }
     }
   })
@@ -199,7 +199,7 @@ app.post("/delete", (req, res) => {
   //add the delete operation
   if (deleteMainItems !== undefined) {
     console.log("Yesssss");
-    item.delete({ _id: deleteMainItems }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
+    item.deleteOne({ _id: deleteMainItems }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
     res.redirect("/");
   } else {
     //print the name of the list in the console:
