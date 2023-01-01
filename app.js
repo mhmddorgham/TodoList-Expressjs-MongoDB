@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+var _ = require('lodash');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const Schema = mongoose.Schema;
-var todoName = " ";
+var todoName = "";
 var nameOfList = " "
 var SubpagesURL = " ";
 var newTaskCateg
@@ -112,6 +113,7 @@ app.get("/:category", (req, res) => {
 
   //add the category name in a variable:
   todoName = req.params.category;
+  todoName = _.lowerCase(todoName);
 
   //create a new date:
   const theDate = new Date();
