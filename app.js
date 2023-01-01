@@ -106,6 +106,7 @@ app.get("/", (req, res) => {
 //Subroutes
 app.get("/:category", (req, res) => {
 
+  //add the category name in a variable:
   todoName = req.params.category;
 
   //create a new date:
@@ -120,11 +121,11 @@ app.get("/:category", (req, res) => {
   console.log(theDate.toLocaleDateString("en-US", options));
 
 
-  //set today to date that has been generated using tolocaleDateString:
-  var today = theDate.toLocaleDateString("en-US", options) + "\n" + todoName + " Todo List";
+  //set today to date that has been generated using tolocaleDateString + category of the list:
+  var today = theDate.toLocaleDateString("en-US", options);
 
 
-  //check if the collection is already there before creating a new collection
+  //check if the collection is already exists before creating a new collection
   List.findOne({ theCategory: todoName }, (err, theList) => {
     if (err) {
       console.log(err);
@@ -139,23 +140,21 @@ app.get("/:category", (req, res) => {
         res.redirect("/" + todoName);
       }
       else {
-        res.render('index', { theDay: today, newItems: theList.listItems });
+        res.render('sublists', { theDay: today, theListName: todoName, newItems: theList.listItems });
       }
     }
   })
-
-
 })
 
 
 
-// app.post("/" + todoName, (req, res) => {
-//   newTaskCateg = new item({
-//     theName: req.body.task
-//   })
-//   newTaskCateg.save()
-//   res.redirect("/" + todoName);
-// })
+app.post("/" + todoName, (req, res) => {
+  newTaskCateg = new item({
+    theName: req.body.task
+  })
+  newTaskCateg.save();
+  res.redirect("/" + todoName);
+})
 
 
 
