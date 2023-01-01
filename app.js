@@ -35,9 +35,11 @@ const item = mongoose.model("item", itemsSchema);
 const firstTask = new item({
   theName: "Buid todolist"
 })
+//
 const secondTask = new item({
   theName: "Design todolist"
 })
+//thirdTask
 const thirdTask = new item({
   theName: "Upload todolist on GitHub"
 })
@@ -191,14 +193,17 @@ app.post("/delete", (req, res) => {
   const nameOfTheList = req.body.theNameOfList;
   console.log(deleteFromList);
   console.log(deleteMainItems);
+  console.log(nameOfTheList);
   //add the delete operation
   if (deleteMainItems !== undefined) {
     console.log("Yesssss");
     item.delete({ _id: deleteMainItems }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
     res.redirect("/");
   } else {
+    //print the name of the list in the console:
     console.log("Look here");
-    console.log(nameOfTheList);
+
+    // use findoneandUpdate method to findthe category with specefied name, then pull the item from the list items using the id, then redirect to the name 
     List.findOneAndUpdate({ theCategory: nameOfTheList }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
       if (!err) {
         res.redirect("/" + nameOfTheList);
