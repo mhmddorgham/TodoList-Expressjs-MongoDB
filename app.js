@@ -5,6 +5,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const Schema = mongoose.Schema;
 var todoName = " ";
+var nameOfList = " "
+var SubpagesURL = " ";
 var newTaskCateg
 //create array of new tasks
 var newTasks = [];
@@ -41,7 +43,6 @@ const thirdTask = new item({
 
 //add defualt items to default item array:
 var defaultItems = [firstTask, secondTask, thirdTask];
-
 
 
 // item.find((err, items) => {
@@ -101,7 +102,7 @@ app.get("/", (req, res) => {
 });
 
 
-
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 //Subroutes
 app.get("/:category", (req, res) => {
@@ -124,6 +125,7 @@ app.get("/:category", (req, res) => {
   //set today to date that has been generated using tolocaleDateString + category of the list:
   var today = theDate.toLocaleDateString("en-US", options);
 
+  SubpagesURL = "/" + todoName;
 
   //check if the collection is already exists before creating a new collection
   List.findOne({ theCategory: todoName }, (err, theList) => {
@@ -146,24 +148,37 @@ app.get("/:category", (req, res) => {
   })
 })
 
+console.log(todoName);
+// //Add the route of the sublists dynamically based on the name of the category:
+// app.post(SubpagesURL, (req, res) => {
+//   newTaskCateg = new item({
+//     theName: req.body.task
+//   })
+//   newTaskCateg.save();
+//   defaultItems.push(newTaskCateg)
+//   res.redirect("/" + todoName);
+// })
 
 
-app.post("/" + todoName, (req, res) => {
-  newTaskCateg = new item({
-    theName: req.body.task
-  })
-  newTaskCateg.save();
-  res.redirect("/" + todoName);
-})
-
-
-
+//the main post route
 app.post("/", (req, res) => {
+  const theTaskName = req.body.task;
+  const theListName = req.body.button;
   const newTask = new item({
-    theName: req.body.task
+    theName: theTaskName
   })
-  newTask.save()
-  res.redirect("/");
+
+  if (theListName === " ") {
+    newTask.save()
+    res.redirect("/");
+  } else {
+    List.findOne({ theCategory: todoName }, (err, foundList) => {
+      foundList.listItems.push(newTask);
+      foundList.save();
+      res.redirect("/" + theListName)
+    })
+
+  }
 })
 
 
