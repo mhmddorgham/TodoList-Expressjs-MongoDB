@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 const Schema = mongoose.Schema;
 var todoName = "";
 var nameOfList = " "
-var SubpagesURL = " ";
 var newTaskCateg
 //create array of new tasks
 var newTasks = [];
@@ -34,7 +33,7 @@ const item = mongoose.model("item", itemsSchema);
 
 // Default Items
 const firstTask = new item({
-  theName: "Buid todolist"
+  theName: "Build todolist"
 })
 //
 const secondTask = new item({
@@ -48,12 +47,12 @@ const thirdTask = new item({
 //add defualt items to default item array:
 var defaultItems = [firstTask, secondTask, thirdTask];
 
-
 // item.find((err, items) => {
 //   err ? console.log(err) : items.forEach((obj) => { console.log(obj.theName) })
 // });
 
 //Create list collections:
+
 
 //Create list schema:
 var listSchema = new Schema({
@@ -79,8 +78,8 @@ app.get("/", (req, res) => {
     day: 'numeric'
   };
 
+  // use the console log to log the date in the console
   console.log(theDate.toLocaleDateString("en-US", options)); // 9/17/2016
-
 
   //set today to date that has been generated using tolocaleDateString:
   today = theDate.toLocaleDateString("en-US", options);
@@ -105,17 +104,15 @@ app.get("/", (req, res) => {
   })
 });
 
-
+//To prevete get favicon in the post request:
 app.get('/favicon.ico', (req, res) => res.status(204));
 
-//Subroutes
+//Subroutes:
 app.get("/:category", (req, res) => {
+  //Add the category name in a variable:
+  todoName = _.capitalize(req.params.category);
 
-  //add the category name in a variable:
-  todoName = req.params.category;
-  todoName = _.lowerCase(todoName);
-
-  //create a new date:
+  //Create a new date:
   const theDate = new Date();
   //Create data information the mentioned in the date:
   var options = {
@@ -129,8 +126,6 @@ app.get("/:category", (req, res) => {
 
   //set today to date that has been generated using tolocaleDateString + category of the list:
   var today = theDate.toLocaleDateString("en-US", options);
-
-  SubpagesURL = "/" + todoName;
 
   //check if the collection is already exists before creating a new collection
   List.findOne({ theCategory: todoName }, (err, theList) => {
@@ -151,7 +146,7 @@ app.get("/:category", (req, res) => {
       }
     }
   })
-})
+});
 
 console.log(todoName);
 // //Add the route of the sublists dynamically based on the name of the category:
@@ -191,28 +186,29 @@ app.post("/delete", (req, res) => {
   //catch the obj id in a variable
   const deleteMainItems = req.body.MainCheckbox;
   const deleteFromList = req.body.Subcheckbox;
-  const nameOfTheList = req.body.theNameOfList;
+  const nameOfTheList = _.lowerCase(req.body.theNameOfList);
   console.log(deleteFromList);
   console.log(deleteMainItems);
   console.log(nameOfTheList);
   //add the delete operation
   if (deleteMainItems !== undefined) {
-    console.log("Yesssss");
+    console.log("deleteMainItems");
     item.deleteOne({ _id: deleteMainItems }, (err) => { err ? console.log(err) : console.log("Succefully Deleted the element"); });
     res.redirect("/");
   } else {
     //print the name of the list in the console:
-    console.log("Look here");
-
-    // use findoneandUpdate method to findthe category with specefied name, then pull the item from the list items using the id, then redirect to the name 
-    List.findOneAndUpdate({ theCategory: nameOfTheList }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
+    console.log("deleteFromList");
+    // use find one and Update method to find the category with specefied name, then pull the item from the list items using the id, then redirect to the name 
+    List.findOneAndUpdate({ theCategory: nameOfTheList }, { safe: true }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
       if (!err) {
+        console.log("This is me");
         res.redirect("/" + nameOfTheList);
       }
     })
   }
 }
-)
+);
+
 
 
 app.listen(PORT, () => {
