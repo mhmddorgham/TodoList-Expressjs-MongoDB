@@ -110,7 +110,7 @@ app.get('/favicon.ico', (req, res) => res.status(204));
 //Subroutes:
 app.get("/:category", (req, res) => {
   //Add the category name in a variable:
-  todoName = _.capitalize(req.params.category);
+  todoName = req.params.category;
 
   //Create a new date:
   const theDate = new Date();
@@ -142,7 +142,7 @@ app.get("/:category", (req, res) => {
         res.redirect("/" + todoName);
       }
       else {
-        res.render('sublists', { theDay: today, theListName: _.capitalize(todoName), newItems: theList.listItems });
+        res.render('sublists', { theDay: today, theListName: todoName, newItems: theList.listItems });
       }
     }
   })
@@ -186,10 +186,12 @@ app.post("/delete", (req, res) => {
   //catch the obj id in a variable
   const deleteMainItems = req.body.MainCheckbox;
   const deleteFromList = req.body.Subcheckbox;
-  const nameOfTheList = _.lowerCase(req.body.theNameOfList);
+  const nameOfTheList = req.body.theNameOfList;
   console.log(deleteFromList);
   console.log(deleteMainItems);
   console.log(nameOfTheList);
+
+  List.findOne({ _id: nameOfTheList }, (err, foundList) => { err ? console.log(err) : console.log(foundList); })
   //add the delete operation
   if (deleteMainItems !== undefined) {
     console.log("deleteMainItems");
@@ -197,14 +199,14 @@ app.post("/delete", (req, res) => {
     res.redirect("/");
   } else {
     //print the name of the list in the console:
-    console.log("deleteFromList");
-    // use find one and Update method to find the category with specefied name, then pull the item from the list items using the id, then redirect to the name 
+    console.log(nameOfTheList);
+    //use find one and Update method to find the category with specefied name, then pull the item from the list items using the id, then redirect to the name 
     List.findOneAndUpdate({ theCategory: nameOfTheList }, { safe: true }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
       if (!err) {
-        console.log("This is me");
         res.redirect("/" + nameOfTheList);
       }
     })
+
   }
 }
 );
