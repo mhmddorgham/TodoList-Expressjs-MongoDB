@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var _ = require('lodash');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 const Schema = mongoose.Schema;
 var todoName = "";
 var nameOfList = " "
@@ -12,7 +12,7 @@ var newTaskCateg
 var newTasks = [];
 var theListName = "";
 //create a new database called todoDB, and connect to the mongose
-mongoose.connect('mongodb://127.0.0.1:27017/todoDB', { useNewUrlParser: true });
+mongoose.connect('mongodb+srv://mhmddorgham:Mo_Dorgham_2003@cluster0.jhgrf1u.mongodb.net/todoDB', { useNewUrlParser: true });
 
 //start using body parser in to get information
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -190,8 +190,6 @@ app.post("/delete", (req, res) => {
   console.log(deleteFromList);
   console.log(deleteMainItems);
   console.log(nameOfTheList);
-
-  List.findOne({ _id: nameOfTheList }, (err, foundList) => { err ? console.log(err) : console.log(foundList); })
   //add the delete operation
   if (deleteMainItems !== undefined) {
     console.log("deleteMainItems");
@@ -201,7 +199,7 @@ app.post("/delete", (req, res) => {
     //print the name of the list in the console:
     console.log(nameOfTheList);
     //use find one and Update method to find the category with specefied name, then pull the item from the list items using the id, then redirect to the name 
-    List.findOneAndUpdate({ theCategory: nameOfTheList }, { safe: true }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
+    List.findOneAndUpdate({ theCategory: nameOfTheList }, { $pull: { listItems: { _id: deleteFromList } } }, (err, foundList) => {
       if (!err) {
         res.redirect("/" + nameOfTheList);
       }
@@ -213,7 +211,7 @@ app.post("/delete", (req, res) => {
 
 
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 })
 
